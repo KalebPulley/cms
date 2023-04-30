@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-xs-12">
+        <button class="btn btn-success pull-right"> New Contact</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12">
+        <a href="#" class="list-group-item clearfix" 
+        *ngFor="let contact of contacts">
+            <div class="pull-left">
+                <h4 class="list-group-item-heading">{{contact.name}}</h4>
+            </div>
+            <span class="pull-right">
+                <img 
+                src="{{contact.imageUrl}}" 
+                alt="{{contact.name}}" 
+                class="img-responsive" 
+                style="max-height: 60px;">
+            </span>
+        </a>
+        <hr>
+        <app-contact></app-contact>
+    </div>
+</div>
+
+
