@@ -1,10 +1,9 @@
-<p>contacts works!</p>
 <div class="row">
     <div class="col-md-5">
-        <app-contacts-list></app-contacts-list>
+        <app-contacts-list [contacts]="contactList" (notifyGrandParent)="selectedContact($event)"></app-contacts-list>
     </div>
     <div class="col-md-7">
 
-        <app-contacts-detail></app-contacts-detail>
+        <app-contacts-detail [selection]="selection"></app-contacts-detail>
     </div>
 </div>

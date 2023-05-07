@@ -10,16 +10,24 @@
 </div>
 <div class="row">
     <div calss="col-xs-12">
-        <img src="../../assets/images/barzeer.jpg" alt="" class="img-responsive">
+        <div class="col-md-2">
+            <img [src]="selection.imageUrl" [alt]="selection.name" class="img-responsive">
+        </div>
         <div class="btn-group">
-            <button class="btn btn-primary dropdown">
+            <button class="btn btn-primary pull-right">
                 Manage contact
             </button>
-            <button class="btn btn-danger dropdown">
+            <button class="btn btn-danger pull-right">
                 Manage contact
             </button>
         </div>
     </div>
+</div>
+<div class="row">
+    <ul>
+        <li>{{selection.email}}</li>
+        <li>{{selection.phone}}</li>
+    </ul>
 </div>
 
 

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Contact } from '../../contact.modle';
+import { ContactsListComponent} from '../contacts-list.component';
 
 @Component({
   selector: 'app-contact',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent {
+
+  @Input() contact;
+  @Output() selectedContact = new EventEmitter<number>();
+
+  selecter(value: number) {
+    this.selectedContact.emit(value)
+  }
 
 }
