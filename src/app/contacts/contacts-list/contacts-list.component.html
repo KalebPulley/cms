@@ -5,9 +5,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xl-12" *ngFor="contact of contacts; index as i; first as isFrist" (selector)="changeSelected($event)">     
-        <app-contact [contact]="contacts[i]" (click)="autoContact($event)"></app-contact>
-        
+    <div class="col-xl-12">     
+        <app-contact
+        *ngFor="let contact of contacts"
+        [contact]="contact"
+        (click)="onSelected(contact)"
+      ></app-contact>       
     </div>
 </div>
 

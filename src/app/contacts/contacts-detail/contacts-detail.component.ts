@@ -7,14 +7,15 @@ import { Contact } from '../contact.modle';
   styleUrls: ['./contacts-detail.component.css']
 })
 export class ContactsDetailComponent {
-  contacts: Contact[] = [
-    new Contact("2", 'Rex Barzee', 'barzeer@byui.edu', '208-496-3768', 
-    "../../assets/images/jacksonk.jpg"
-    , [])
-    , new Contact("1", 'R. Kent Jackson', 'jacksonk@byui.edu', '208-496-3771', 
-    "../../assets/images/barzeer.jpg"
-    , [])
+  // contacts: Contact[] = [
+  //   new Contact("2", 'Rex Barzee', 'barzeer@byui.edu', '208-496-3768', 
+  //   "../../assets/images/jacksonk.jpg"
+  //   , [])
+  //   , new Contact("1", 'R. Kent Jackson', 'jacksonk@byui.edu', '208-496-3771', 
+  //   "../../assets/images/barzeer.jpg"
+  //   , [])
 
-  ];
-  @Input() selection;
+  // ];
+
+  @Input() contact: Contact;
 }
