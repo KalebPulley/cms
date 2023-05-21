@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Contact } from './contact.modle';
+import { Contacts } from './contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -18,6 +19,14 @@ export class ContactsComponent {
   // ];
 // selected: Contact = this.contacts[0];
 selectedContact: Contact;
+
+constructor(private Contacts: Contacts) {}
+
+ngOnInit(){
+  this.Contacts.selectedContact.subscribe((contact: Contact) => {
+    this.selectedContact = contact;
+  });
+}
 
 // @Output() selection = this.selected;
 // @Output() contactList = this.contacts;
