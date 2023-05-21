@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Message } from './message.model';
+import { MessageService } from './message.service';
 
 @Component({
   selector: 'app-messages',
@@ -7,4 +9,13 @@ import { Component } from '@angular/core';
 })
 export class MessagesComponent {
 
+  selectedMessage: Message;
+
+constructor(private Messages: MessageService) {}
+
+ngOnInit(){
+  this.Messages.selectedMessage.subscribe((Message: Message) => {
+    this.selectedMessage = Message;
+  });
+}
 }
