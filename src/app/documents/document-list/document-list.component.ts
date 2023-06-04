@@ -23,9 +23,6 @@ export class DocumentListComponent {
   
   constructor(private Documents: DocumentService) {}
 
-  onSelected(Document: Document) {
-    this.Documents.selectedDocument.emit(Document);
-  }
   
   
   

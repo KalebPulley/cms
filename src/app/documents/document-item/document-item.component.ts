@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Document } from '../document.module'
 
 @Component({
   selector: 'app-document-item',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class DocumentItemComponent {
 
+  constructor(){
+    
+  }
+
+  @Input() document: Document;
 }
