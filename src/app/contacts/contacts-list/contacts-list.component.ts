@@ -4,6 +4,7 @@ import { Component
   , Input } from '@angular/core';
 import { Contact } from '../contact.modle';
 import { Contacts } from '../contact.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -24,6 +25,8 @@ export class ContactsListComponent {
   // ];
 
   contacts: Contact[] = [];
+  
+  subscription: Subscription;
 
 selectedContact = Contact;
 //@Output selectedContact
@@ -35,11 +38,14 @@ constructor(private ContactSer: Contacts) {}
 
 ngOnInit(){
   this.contacts =  this.ContactSer.getContacts();
-  this.ContactSer.contactChangedEvent.subscribe(
+  this.subscription = this.ContactSer.contactListChangedEvent.subscribe(
     (contacts: Contact[]) => {
       this.contacts = contacts;
     }
   );
+}
 
+ngOnDestroy(): void {
+  this.subscription.unsubscribe();
 }
 }

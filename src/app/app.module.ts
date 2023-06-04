@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
-import { ContactsDetailComponent } from './contacts/contacts-detail/contacts-detail.component';
+import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
 import { ContactComponent } from './contacts/contact/contact.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -16,7 +16,7 @@ import { DocumentDetailComponent } from './documents/document-detail/document-de
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
-import { ContactDetailComponent } from './contacts/contact-detail/contact-detail.component';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +24,6 @@ import { ContactDetailComponent } from './contacts/contact-detail/contact-detail
     HeaderComponent,
     ContactsComponent,
     ContactsListComponent,
-    ContactsDetailComponent,
     ContactComponent,
     DocumentsComponent,
     MessagesComponent,
