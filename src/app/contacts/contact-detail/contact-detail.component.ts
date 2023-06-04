@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Contact } from '../contact.model';
 import { Contacts } from '../contact.service';
@@ -11,18 +11,23 @@ import { Contacts } from '../contact.service';
 })
 export class ContactDetailComponent {
 
-  @Input() contact: Contact;
+
+  contact: Contact;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private service: Contacts
-  ) {}
+    private contactSer: Contacts
+  , private router: Router
+  , private route: ActivatedRoute){
+}
 
-  // ngOnInit() {
-  //   this.contact$ = this.route.paramMap.pipe(
-  //     switchMap((params: ParamMap) =>
-  //       this.service.getContact(params.get('id')!))
-  //   );
-  // }
+ngOnInit(): void {
+this.route.params.subscribe((params: Params) => {
+  this.contact = this.contactSer.getContact(params['id']);
+});
+}
+
+  onDelete() {
+    this.contactSer.deleteContact(this.contact);
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
 }

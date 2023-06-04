@@ -31,7 +31,6 @@ export class DocumentDetailComponent {
 }
 
 onView(){
-  console.log("deleted a thing 1")
   this.nativeWindow.open(this.document.url)
 }
 

@@ -6,13 +6,25 @@ import {MOCKCONTACTS} from './MOCKCONTACTS';
   providedIn: 'root'
 })
 export class Contacts {
-  selectedContact = new EventEmitter<Contact>();
+  contactChangedEvent = new EventEmitter<Contact[]>();
 
-  contacts: Contact[] = [];
+  
+  deleteContact(contact: Contact) {
+    if (!contact) return;
+    const pos = this.contacts.indexOf(contact);
+    if (pos < 0) return;
+    this.contacts.splice(pos, 1);
+    this.contactChangedEvent.emit(this.contacts.slice());
+  }
+
+  private contacts: Contact[] = [];
 
   constructor() { 
     this.contacts = MOCKCONTACTS;
   }
+
+  selectedContactEvent = new EventEmitter<Contact>();
+
   getContacts(): Contact[] {
     return this.contacts.slice();
   }

@@ -23,7 +23,7 @@ selectedContact: Contact;
 constructor(private Contacts: Contacts) {}
 
 ngOnInit(){
-  this.Contacts.selectedContact.subscribe((contact: Contact) => {
+  this.Contacts.selectedContactEvent.subscribe((contact: Contact) => {
     this.selectedContact = contact;
   });
 }

@@ -31,13 +31,15 @@ selectedContact = Contact;
 //@Output() selectedContactEvent = new EventEmitter<Contact>();
   
 
-onSelected(contact: Contact) {
-  this.Contacts.selectedContact.emit(contact);
-}
-
-constructor(private Contacts: Contacts) {}
+constructor(private ContactSer: Contacts) {}
 
 ngOnInit(){
-  this.contacts =  this.Contacts.getContacts();
+  this.contacts =  this.ContactSer.getContacts();
+  this.ContactSer.contactChangedEvent.subscribe(
+    (contacts: Contact[]) => {
+      this.contacts = contacts;
+    }
+  );
+
 }
 }
