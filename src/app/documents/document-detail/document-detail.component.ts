@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Document } from '../document.module';
 import { DocumentService } from '../document.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -31,7 +31,14 @@ export class DocumentDetailComponent {
 }
 
 onView(){
+  console.log("deleted a thing 1")
   this.nativeWindow.open(this.document.url)
+}
+
+
+onDelete() {
+  this.docService.deleteDocument(this.document);
+  this.router.navigate(['../'], { relativeTo: this.route });
 }
 
 

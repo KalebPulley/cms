@@ -21,13 +21,18 @@ export class DocumentListComponent {
 
  
   
-  constructor(private Documents: DocumentService) {}
+  constructor(private DocumentSer: DocumentService) {}
 
   
   
   
   
-  ngOnInit(){
-    this.documents =  this.Documents.getDocuments();
+  ngOnInit(): void {
+    this.documents = this.DocumentSer.getDocuments();
+    this.DocumentSer.documentChangedEvent.subscribe(
+      (documents: Document[]) => {
+        this.documents = documents;
+      }
+    );
   }
 }

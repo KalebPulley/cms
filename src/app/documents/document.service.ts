@@ -7,12 +7,19 @@ import { Document } from './document.model';
 })
 export class DocumentService {
   selectedDocumentEvent: any;
+  documentChangedEvent = new EventEmitter<Document[]>();
+
+  
   deleteDocument(document: Document) {
-    throw new Error('Method not implemented.');
+    if (!document) return;
+    const pos = this.documents.indexOf(document);
+    if (pos < 0) return;
+    this.documents.splice(pos, 1);
+    this.documentChangedEvent.emit(this.documents.slice());
   }
 
+
   private documents: Document[] = [];
-  documentChangedEvent: any;
   
   constructor() { 
     this.documents = MOCKDOCUMENTS
@@ -28,4 +35,5 @@ export class DocumentService {
   getDocument(id: string): Document {
     return this.documents.find((c) => c.id === id);
   }
+
 }
