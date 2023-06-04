@@ -1,13 +1,18 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
-import { Document } from './document.module';
+import { Document } from './document.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
+  selectedDocumentEvent: any;
+  deleteDocument(document: Document) {
+    throw new Error('Method not implemented.');
+  }
 
   private documents: Document[] = [];
+  documentChangedEvent: any;
   
   constructor() { 
     this.documents = MOCKDOCUMENTS
