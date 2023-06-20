@@ -17,7 +17,11 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
 import { MessageItemComponent } from './messages/message-item/message-item.component';
 import { MessageEditComponent } from './messages/message-edit/message-edit.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+
+
+//import {DndModule} from 'ng2-dnd';
 
 
 @NgModule({
@@ -28,20 +32,23 @@ import { FormsModule } from '@angular/forms';
     ContactsListComponent,
     ContactComponent,
     DocumentsComponent,
-    MessagesComponent,
+    MessagesComponent,  
     DocumentListComponent,
     DocumentItemComponent,
     DocumentDetailComponent,
     MessageItemComponent,
     MessageEditComponent,
     MessageListComponent,
+    DocumentEditComponent,
     ContactDetailComponent,
-    DocumentEditComponent
+    ContactEditComponent  
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule
+    //DndModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
