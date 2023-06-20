@@ -3,7 +3,7 @@ import { Component
   , EventEmitter
   , Input } from '@angular/core';
 import { Contact } from '../contact.modle';
-import { Contacts } from '../contact.service';
+import { ContactService } from '../contact.service';
 import { Subscription } from 'rxjs';
 
 
@@ -34,7 +34,7 @@ selectedContact = Contact;
 //@Output() selectedContactEvent = new EventEmitter<Contact>();
   
 
-constructor(private ContactSer: Contacts) {}
+constructor(private ContactSer: ContactService) {}
 
 ngOnInit(){
   this.contacts =  this.ContactSer.getContacts();
