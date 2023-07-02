@@ -20,6 +20,7 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 
 
 //import {DndModule} from 'ng2-dnd';
@@ -49,7 +50,8 @@ import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
     //DndModule.forRoot()
   ],
   providers: [],

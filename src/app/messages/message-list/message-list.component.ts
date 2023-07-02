@@ -22,7 +22,7 @@ onSelected(message: Message) {
 ngOnInit(){
   this.messages =  this.Messages.getMessages();
   this.messages = this.Messages.getMessages();
-    this.Messages.newMessageEvent.subscribe((messages: Message[]) => {
+    this.Messages.messageListChangedEvent.subscribe((messages: Message[]) => {
       this.messages = messages;
     });
 }
