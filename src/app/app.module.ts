@@ -19,6 +19,7 @@ import { MessageEditComponent } from './messages/message-edit/message-edit.compo
 import { MessageListComponent } from './messages/message-list/message-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
 
 
 //import {DndModule} from 'ng2-dnd';
@@ -41,7 +42,8 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
     MessageListComponent,
     DocumentEditComponent,
     ContactDetailComponent,
-    ContactEditComponent  
+    ContactEditComponent,
+    ContactsFilterPipe  
   ],
   imports: [
     BrowserModule,

@@ -27,6 +27,7 @@ export class ContactsListComponent {
   contacts: Contact[] = [];
   
   subscription: Subscription;
+  term: string = '';
 
 selectedContact = Contact;
 //@Output selectedContact
@@ -47,5 +48,9 @@ ngOnInit(){
 
 ngOnDestroy(): void {
   this.subscription.unsubscribe();
+}
+
+search(value: string){
+  this.term = value;
 }
 }
