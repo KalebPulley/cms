@@ -3,6 +3,7 @@ import  { Contact } from './contact.modle';
 import {MOCKCONTACTS} from './MOCKCONTACTS';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +13,23 @@ export class ContactService {
   contactListChangedEvent = new Subject<Contact[]>();
 
   //database url
-  private contURL = 'https://wdd430backend-default-rtdb.firebaseio.com/contacts.json';
+  private contURL = 'http://localhost:3000/api/contacts';
 
-  deleteContact(contact: Contact) {
-    if (!contact) return;
-    const pos = this.contacts.indexOf(contact);
-    if (pos < 0) return;
-    this.contacts.splice(pos, 1);
-    this.storeContacts();
+  deleteContact(cont: Contact) {
+    this.http.delete(this.contURL + "/" + cont.id)
+    .subscribe(() => {
+      const updatedcontacts = this.contacts.filter(contact => contact.id !== cont.id);
+      this.contacts = updatedcontacts;
+      this.contactListChangedEvent.next([...this.contacts]);
+    });
+    this.getContacts();
+
+
+    // if (!contact) return;
+    // const pos = this.contacts.indexOf(contact);
+    // if (pos < 0) return;
+    // this.contacts.splice(pos, 1);
+    // this.storeContacts();
   }
   storeContacts() {
     this.http
@@ -48,7 +58,19 @@ export class ContactService {
   getContacts(): Contact[] {
     //return this.contacts.slice();
     this.http
-    .get<Contact[]>(this.contURL)
+    .get<{document: string, contacts: any[]}>(this.contURL)
+    .pipe(map((contactData) => {
+      return contactData.contacts.map((contact: { name: any; email: any; phone: any; imageUrl: any; _id: any; group: any;}) => {
+        return {
+        id: contact._id,
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+        imageUrl: contact.imageUrl,
+        group: contact.phone
+        }
+      });
+    }))
     .subscribe((cont: Contact[]) => {
       this.contacts = cont;
       this.maxContactId = this.getMaxId();
@@ -76,10 +98,16 @@ export class ContactService {
 
   addContact(newContact: Contact) {
     if (newContact === null || newContact === undefined) return;
-    this.maxContactId++;
-    newContact.id = `${this.maxContactId}`;
-    this.contacts.push(newContact);
-    this.storeContacts();
+    const contact: any = { name: newContact.name, email: newContact.email, phone: newContact.phone, imageUrl: newContact.imageUrl, group: newContact.group };
+    this.http
+    .post<{ contact: string, contactId: string }>("http://localhost:3000/api/contacts", contact)
+    .subscribe(responseData =>{
+      const id = responseData.contactId;
+      contact.id = id;
+      this.contacts.push(contact);
+      this.contactListChangedEvent.next([...this.contacts]);
+      this.getContacts();
+    });
   }
 
   updateContact(original: Contact, newContact: Contact) {
@@ -95,7 +123,7 @@ export class ContactService {
     if (pos < 0) return;
 
     newContact.id = original.id;
-    this.contacts[pos] = newContact;
-    this.storeContacts();
+    this.addContact(newContact);
+    this.deleteContact(original);
   }
 }

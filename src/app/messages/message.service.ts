@@ -3,6 +3,7 @@ import { Message } from './message.model';
 import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class MessageService {
 
   messages: Message[] = [];
 
-  private msgURL = 'https://wdd430backend-default-rtdb.firebaseio.com/messages.json';
+  private msgURL = 'http://localhost:3000/api/messages';
   maxMessageId: any;
 
   constructor(private http: HttpClient) { 
@@ -26,7 +27,17 @@ export class MessageService {
   getMessages(): Message[] {
    //return this.messages.slice();
    this.http
-    .get<Message[]>(this.msgURL)
+    .get<{message: string, messages: any[]}>(this.msgURL)
+    .pipe(map((messageData) => {
+      return messageData.messages.map((message: { subject: any; msgText: any; _id: any; sender: any}) => {
+        return {
+          subject: message.subject,
+          msgText: message.msgText,
+          sender: message.sender,
+          id: message._id
+        }
+      });
+    }))
     .subscribe((msg: Message[]) => {
       this.messages = msg;
       this.maxMessageId = this.getMaxId();
@@ -69,10 +80,35 @@ export class MessageService {
 
   addMessage(message: Message) {
     if (message === null || message === undefined) return;
-    this.maxMessageId++;
-    message.id = `${this.maxMessageId}`;
-    this.messages.push(message);
-    this.storeMessages();
+    const messagesend: any = { id: message.id, subject: message.subject, msgText: message.msgText, sender: message.sender };
+    this.http
+    .post<{ message: string, messageId: string }>("http://localhost:3000/api/messages", message)
+    .subscribe(responseData =>{
+      const id = responseData.messageId;
+      message.id = id;
+      this.messages.push(message);
+      this.messageListChangedEvent.next([...this.messages]);
+      this.getMessages();
+    });
+  }
+
+  deleteMessage(messageId: string){
+    console.log("delete entered");
+    
+    this.http.delete("http://localhost:3000/api/messages/" +  messageId)
+    .subscribe(() => {
+      const updatedmessages = this.messages.filter(message => message.id !== messageId);
+      this.messages = updatedmessages;
+      this.messageListChangedEvent.next([...this.messages]);
+    });
+    this.getMessages();
+  }
+
+    updateMessage(originalmessage: Message, newmessage: Message) {
+      //const message: any = { id: originalmessage.id, title: newmessage.title, content: newmessage.content };
+      this.addMessage(newmessage);
+      this.deleteMessage(originalmessage.id);
+      this.getMessages();
   }
 
 }

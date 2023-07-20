@@ -3,6 +3,7 @@ import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Document } from './document.model';
 import { Subject } from 'rxjs'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,24 @@ export class DocumentService {
   documentListChangedEvent = new Subject<Document[]>();
 
   //http code
-  private docsURL = 'https://wdd430backend-default-rtdb.firebaseio.com/documents.json';
+  private docsURL = 'http://localhost:3000/api/documents';
 
 
   
-  deleteDocument(document: Document) {
-    if (!document) return;
-    const pos = this.documents.indexOf(document);
-    if (pos < 0) return;
-    this.documents.splice(pos, 1);
-    this.storeDocuments();
+  deleteDocument(doc: Document) {
+    this.http.delete(this.docsURL +"/"+doc.id)
+    .subscribe(() => {
+      const updateddocuments = this.documents.filter(document => document.id !== doc.id);
+      this.documents = updateddocuments;
+      this.documentListChangedEvent.next([...this.documents]);
+    });
+    this.getDocuments();
+
+    // if (!document) return;
+    // const pos = this.documents.indexOf(document);
+    // if (pos < 0) return;
+    // this.documents.splice(pos, 1);
+    // this.storeDocuments();
   }
 
 
@@ -40,7 +49,18 @@ export class DocumentService {
   getDocuments(): Document[] {
     //return this.documents.slice();
     this.http
-    .get<Document[]>(this.docsURL)
+    .get<{document: string, documents: any[]}>(this.docsURL)
+    .pipe(map((documentData) => {
+      return documentData.documents.map((document: { name: any; description: any; children: any; url: any; _id: any;}) => {
+        return {
+        id: document._id,
+        name: document.name,
+        description: document.description,
+        url: document.url,
+        children: document.children
+        }
+      });
+    }))
     .subscribe((docs: Document[]) => {
       this.documents = docs;
       this.maxDocumentId = this.getMaxId();
@@ -70,6 +90,8 @@ export class DocumentService {
   }
 
   getDocument(id: string): Document {
+    console.log(JSON.stringify(this.documents));
+    
     return this.documents.find((c) => c.id === id);
   }
 
@@ -81,28 +103,24 @@ export class DocumentService {
     return maxId;
   }
 
-  addDocument(newDoc: Document) {
-    if (newDoc === null || newDoc === undefined) return;
-    this.maxDocumentId++;
-    newDoc.id = `${this.maxDocumentId}`;
-    this.documents.push(newDoc);
-    this.storeDocuments();
+  addDocument(document: Document) {
+    if (document === null || document === undefined) return;
+    const documentsend: any = { name: document.name, description: document.description, children: document.children, url: document.url };
+    this.http
+    .post<{ document: string, documentId: string }>("http://localhost:3000/api/documents", document)
+    .subscribe(responseData =>{
+      const id = responseData.documentId;
+      document.id = id;
+      this.documents.push(document);
+      this.documentListChangedEvent.next([...this.documents]);
+      this.getDocuments();
+    });
   }
 
   updateDocument(original: Document, newDoc: Document) {
-    if (
-      newDoc === null ||
-      newDoc === undefined ||
-      original === null ||
-      original === undefined
-    ) {
-      return;
-    }
-    const pos = this.documents.indexOf(original);
-    if (pos < 0) return;
-
-    newDoc.id = original.id;
-    this.documents[pos] = newDoc;
-    this.storeDocuments();
+    //const message: any = { id: originalmessage.id, title: newmessage.title, content: newmessage.content };
+    this.addDocument(newDoc);
+    this.deleteDocument(original);
+    this.getDocuments();
   }
 }
